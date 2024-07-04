@@ -4,6 +4,31 @@
 
 using namespace testing;
 
+
+TEST(DBSYSTEM, DB001)
+{
+    DBAPI& db = DatabaseAPI();
+
+    LogSystem app(&db);
+    cout << app.getLogMessage("Very GG");
+}
+
+class MockDB : public DBAPI
+{
+public:
+    MOCK_METHOD(string, getDBName, (), (override));
+};
+
+TEST(DBSYSTEM, DB002)
+{
+    MockDB db;
+    EXPECT_CALL(db, getDBName())
+        .WillRepeatedly(Return(string{ "FACK_DB" }));
+
+    LogSystem app(&db);
+    cout << app.getLogMessage("Very GG");
+}
+
 class MockCal : public Cal
 {
 public:
