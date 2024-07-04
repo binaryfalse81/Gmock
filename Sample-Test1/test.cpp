@@ -4,6 +4,53 @@
 
 using namespace testing;
 
+class MockCal : public Cal
+{
+public:
+    MOCK_METHOD(int, getSum, (int a, int b), ());
+    MOCK_METHOD(int, getValue, (), ());
+};
+
+TEST(CalTest, CalMock77)
+{
+    MockCal mc;
+
+    EXPECT_CALL(mc, getValue)
+        .Times(2) // behavior verification
+        .WillRepeatedly(Return(10000)); // stub
+
+    // state verification
+    int value = mc.getValue();
+    EXPECT_THAT(value, Eq(10000));
+    EXPECT_THAT(mc.getValue(), Eq(10000));
+}
+
+TEST(CalTest, CalMock)
+{
+    MockCal mc;
+
+    // behavior verification
+    EXPECT_CALL(mc, getSum(1, 2))
+        .Times(2);
+    
+    int ret1 = mc.getSum(1, 2);
+    int ret2 = mc.getSum(1, 2);
+}
+
+TEST(CalTest, CalMock2)
+{
+    MockCal mc;
+
+    // behavior verification & sturbbing 동시사용
+    EXPECT_CALL(mc, getSum(1, 2))
+        .Times(2)
+        .WillRepeatedly(Return(100));
+
+    int ret1 = mc.getSum(1, 2);
+    int ret2 = mc.getSum(1, 2);
+}
+
+
 TEST(TestCaseName, TestName)
 {
     EXPECT_THAT(1, Eq(1));

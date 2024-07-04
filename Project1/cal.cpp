@@ -6,6 +6,10 @@ using namespace std;
 class Cal
 {
 public:
+    int getValue(void)
+    {
+        return 0;
+    }
     int getSum(int a, int b)
     {
         return a + b;
